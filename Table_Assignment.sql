@@ -1,7 +1,6 @@
 --1
 create table Student(
 [Sid] varchar(10) primary key,
-[index] int,
 SurName varchar(10),
 MiddleName varchar(10),
 GivenName varchar(10),
