@@ -1,3 +1,5 @@
+drop table Lecture
+
 --1
 create table Student(
 [Sid] varchar(10) primary key,
@@ -15,10 +17,10 @@ values
 
 --2
 create table Lecture(
-ICode varchar(10) primary key,
+Lid varchar(10) primary key,
 Campus varchar(10)
 )
-insert Lecture(ICode,Campus)
+insert Lecture(Lid,Campus)
 values
 ('sonnt5','HL'),
 ('caupd','HL'),
@@ -49,5 +51,69 @@ values
 ('7:30','9:00'),
 ('9:10','10:40'),
 ('10:50','12:20')
+
+--5
+
+create table [Group](
+Gname varchar(10),
+Lid varchar(10),
+Suid varchar(10),
+primary key (Gname,Lid,Suid),
+foreign key (Lid) references Lecture(Lid),
+foreign key (Suid) references Course(Suid),
+)
+
+insert [Group](Gname,Lid,Suid)
+values
+('SE1647','sonnt5','DBI202'),
+('SE1647','caupd','CSD201'),
+('SE1647','anhdt','LAB211')
+
+--6
+create table Study(
+[Sid] varchar(10),
+Suid varchar(10),
+AverageGrade float,
+[Status] int,
+Primary key (Suid,[Sid]),
+foreign key (Suid) references Course(Suid),
+foreign key ([Sid]) references Student([Sid]),
+)
+
+insert Study([Sid],Suid,AverageGrade,[Status])
+values
+('HE163283','DBI202',7.5,1),
+('HE161275','JPD113',7.5,1),
+('HE161102','JPD113',6,1),
+('HE160176','DBI202',4.5,1),
+('HE160866','DBI202',6.0,1)
+
+create table GradeDetail(
+[Sid] varchar(10),
+Suid varchar(10),
+GradeCategory varchar(20),
+[Weight] int,
+[Value] float,
+Primary key (Suid,[Sid],GradeCategory),
+foreign key (Suid,[Sid]) references Study(Suid,[Sid]),
+check ([Weight]>0 and [Weight]<100),
+check ([Value]>0 and [Value]<10)
+)
+
+create table Assessment(
+[Sid] varchar(10),
+Suid varchar(10),
+GradeCategory varchar(20),
+Duration varchar(20),
+Note varchar(500),
+[Type] varchar(10),
+[Weight] int,
+part int,
+Primary key (Suid,[Sid],GradeCategory),
+foreign key (Suid,[Sid],GradeCategory) references GradeDetail(Suid,[Sid],GradeCategory),
+check ([Weight]>0 and [Weight]<100)
+)
+
+
 
 
